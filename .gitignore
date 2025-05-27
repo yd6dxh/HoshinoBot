@@ -159,3 +159,10 @@ hoshino/modules/priconne/pcr_calculator_plus/
 hoshino/modules/recall/
 hoshino/modules/wordle/
 hoshino/modules/yobot_remix/
+hoshino/modules/emojiban/
+hoshino/modules/rank/
+hoshino/modules/stratage/
+hoshino/modules/utils/
+hoshino/modules/voiceguess/
+hoshino/modules/anticoncurrency/
+hoshino/modules/yobot_remix/
