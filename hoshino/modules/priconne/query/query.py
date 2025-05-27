@@ -43,9 +43,9 @@ async def rank_sheet(bot, ev):
         # await util.silence(ev, 60)
 
 
-@sv.on_fullmatch('jjc', 'JJC', 'JJC作业', 'JJC作业网', 'JJC数据库', 'jjc作业', 'jjc作业网', 'jjc数据库')
-async def say_arina_database(bot, ev):
-    await bot.send(ev, '公主连接Re:Dive 竞技场编成数据库\n日文：https://nomae.net/arenadb \n中文：https://pcrdfans.com/battle')
+# @sv.on_fullmatch('jjc', 'JJC', 'JJC作业', 'JJC作业网', 'JJC数据库', 'jjc作业', 'jjc作业网', 'jjc数据库')
+# async def say_arina_database(bot, ev):
+#     await bot.send(ev, '公主连接Re:Dive 竞技场编成数据库\n日文：https://nomae.net/arenadb \n中文：https://pcrdfans.com/battle')
 
 
 OTHER_KEYWORDS = '【日rank】【台rank】【b服rank】【jjc作业网】【黄骑充电表】【一个顶俩】'
@@ -113,10 +113,4 @@ DRAGON_TOOL = f'''
 @sv.on_fullmatch('一个顶俩', '拼音接龙', '韵母接龙')
 async def dragon(bot, ev):
     await bot.send(ev, DRAGON_TOOL, at_sender=True)
-    await util.silence(ev, 60)
-
-
-@sv.on_fullmatch('千里眼')
-async def future_gacha(bot, ev):
-    await bot.send(ev, "亿里眼·一之章 nga.178.com/read.php?tid=21317816\n亿里眼·二之章 nga.178.com/read.php?tid=25358671")
     await util.silence(ev, 60)

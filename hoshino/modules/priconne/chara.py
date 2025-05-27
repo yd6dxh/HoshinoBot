@@ -126,6 +126,25 @@ async def download_chara_icon(id_, star):
         logger.error(f'Failed to download {url}. {type(e)}')
         logger.exception(e)
         return 1        # error
+    
+async def download_chara_card(id_, star):
+    url = f'https://redive.estertion.win/card/full/{id_}{star}1.webp'
+    save_path = R.img(f'priconne/card/card_full_{id_}{star}1.png').path
+    logger.info(f'Downloading chara card from {url}')
+    try:
+        rsp = await aiorequests.get(url, stream=True, timeout=5)
+        if 200 == rsp.status_code:
+            img = Image.open(BytesIO(await rsp.content))
+            img.save(save_path)
+            logger.info(f'Saved to {save_path}')
+            return 0    # ok
+        else:
+            logger.error(f'Failed to download {url}. HTTP {rsp.status_code}')
+            return 1        # error
+    except Exception as e:
+        logger.error(f'Failed to download {url}. {type(e)}')
+        logger.exception(e)
+        return 1        # error
 
 
 class Chara:
@@ -141,7 +160,26 @@ class Chara:
 
     @property
     def is_npc(self) -> bool:
-        return is_npc(self.id)
+        return is_npc(self.id)    
+    
+    async def get_card(self, star=0) -> R.ResImg:
+        star = star or self.star
+        star = 3 if 1 <= star < 5 else 6
+        res = R.img(f'priconne/card/card_full_{self.id}{star}1.png')
+        if not res.exist:
+            res = R.img(f'priconne/card/card_full_{self.id}31.png')
+        if not res.exist:
+            await asyncio.gather(
+                download_chara_card(self.id, 6),
+                download_chara_card(self.id, 3),
+            )
+            res = R.img(f'priconne/card/card_full_{self.id}{star}1.png')
+        if not res.exist:
+            res = R.img(f'priconne/card/card_full_{self.id}31.png')
+        return res
+    
+    async def get_card_cqcode(self, star=0):
+        return (await self.get_card(star)).cqcode
 
     @property
     def icon(self):
@@ -268,6 +306,27 @@ async def download_star6_chara_icon(sess: CommandSession):
         ret = await asyncio.gather(*tasks)
         succ = sum(r == 0 for r in ret)
         await sess.send(f'ok! downloaded {succ}/{len(ret)} icons.')
+    except Exception as e:
+        logger.exception(e)
+        await sess.send(f'Error: {type(e)}')
+
+@sucmd('download-pcr-chara-icon', force_private=False, aliases=('下载角色卡面'))
+async def download_pcr_chara_card(sess: CommandSession):
+    '''
+    覆盖更新3、6星卡面
+    '''
+    try:
+        ch = fromname(sess.current_arg_text.strip())
+        assert ch.id != UNKNOWN, '未知角色名'
+        await asyncio.gather(
+            download_chara_card(ch.id, 6),
+            download_chara_card(ch.id, 3),
+            download_chara_card(ch.id, 1),
+        )
+        msg = await ch.get_card_cqcode(6) + \
+            await ch.get_card_cqcode(3) + \
+            await ch.get_card_cqcode(1)
+        await sess.send(msg)
     except Exception as e:
         logger.exception(e)
         await sess.send(f'Error: {type(e)}')
