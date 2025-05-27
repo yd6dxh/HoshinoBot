@@ -138,3 +138,24 @@ venv.bak/
 .mypy_cache/
 
 start.bat
+
+# 忽略未修改的嵌套子模块（create mode 160000）
+hoshino/modules/GenshinUID/
+hoshino/modules/Git-Manage/
+hoshino/modules/HoshinoReboot/
+hoshino/modules/XQA/
+hoshino/modules/auto_strategy/
+hoshino/modules/autopcr/
+hoshino/modules/biliminiapp_to_link/
+hoshino/modules/carryover_cal/
+hoshino/modules/convert2img/
+hoshino/modules/kanna_connection_redive/
+hoshino/modules/multicq_send/
+hoshino/modules/pcr_calculator_plus/
+hoshino/modules/pcr_calendar/
+hoshino/modules/pcrdapi/
+hoshino/modules/pcrjjc_huannai2/
+hoshino/modules/priconne/pcr_calculator_plus/
+hoshino/modules/recall/
+hoshino/modules/wordle/
+hoshino/modules/yobot_remix/
